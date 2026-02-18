@@ -36,24 +36,55 @@
         header {
             background: linear-gradient(135deg, #1e3c72, #2a5298);
             color: white;
-            padding: 16px 20px;
-            text-align: center;
+            padding: 12px 20px;
             position: sticky;
             top: 0;
             z-index: 10;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
-        header h1 {
-            font-size: 1.5rem;
+        .header-content {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+        
+        .logo-img-placeholder {
+            display: none;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
             gap: 8px;
         }
         
-        header h1 i {
+        .logo-text i {
             font-size: 1.3rem;
+        }
+        
+        .header-version {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 8px;
+            border-radius: 20px;
         }
         
         /* Mobile Tab Navigation */
@@ -646,6 +677,14 @@
                 grid-template-columns: 1fr 1fr;
                 gap: 12px;
             }
+            
+            .logo-img {
+                height: 50px;
+            }
+            
+            .logo-text {
+                font-size: 1.8rem;
+            }
         }
         
         /* Mobile adjustments */
@@ -674,13 +713,60 @@
             .result-value {
                 font-size: 1.1rem;
             }
+            
+            .logo-img {
+                height: 35px;
+            }
+            
+            .logo-text {
+                font-size: 1.3rem;
+            }
+            
+            .header-version {
+                display: none;
+            }
+        }
+        
+        /* Preview mode - สำหรับการแสดงผลในระบบไฟล์ */
+        .local-file-warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 8px 16px;
+            text-align: center;
+            font-size: 0.85rem;
+            border-bottom: 1px solid #ffeeba;
+        }
+        
+        .local-file-warning i {
+            margin-right: 6px;
         }
     </style>
 </head>
 <body>
+    <!-- แสดงคำเตือนสำหรับการใช้งานไฟล์ในระบบ (จะถูกซ่อนเมื่ออัปโหลดขึ้นเซิร์ฟเวอร์) -->
+    <div class="local-file-warning" id="localFileWarning" style="display: none;">
+        <i class="fas fa-info-circle"></i>
+        กำลังทำงานในโหมด Local File - กรุณาอัปโหลดไฟล์โลโก้ขึ้นเซิร์ฟเวอร์เพื่อแสดงผล
+    </div>
+
     <div class="container">
         <header>
-            <h1><i class="fas fa-route"></i>LOGi Trip</h1>
+            <div class="header-content">
+                <div class="logo-container">
+                    <!-- แสดงโลโก้จากไฟล์ local -->
+                    <img src="file:///D:/Est/!! PERSONAL !!/Web APP/GitHub/คำนวณเวลาเดินทาง/logo_big.png" 
+                         alt="LOGi Trip Logo" 
+                         class="logo-img" 
+                         id="logoImg"
+                         onerror="handleLogoError()">
+                    
+                    <!-- ข้อความสำรองเมื่อไม่พบไฟล์โลโก้ -->
+                    <div class="logo-text" id="logoText">
+                        <i class="fas fa-route"></i>LOGi Trip
+                    </div>
+                </div>
+                <div class="header-version">v1.0.0</div>
+            </div>
         </header>
         
         <!-- Mobile Tab Navigation -->
@@ -923,6 +1009,23 @@
     </div>
 
     <script>
+        // ฟังก์ชันจัดการเมื่อโหลดโลโก้ไม่สำเร็จ
+        function handleLogoError() {
+            const logoImg = document.getElementById('logoImg');
+            const logoText = document.getElementById('logoText');
+            
+            // ซ่อนรูปภาพ
+            logoImg.style.display = 'none';
+            
+            // แสดงข้อความสำรอง
+            logoText.style.display = 'flex';
+            
+            // แสดงคำเตือน (ถ้าทำงานในโหมด local file)
+            if (window.location.protocol === 'file:') {
+                document.getElementById('localFileWarning').style.display = 'block';
+            }
+        }
+
         // State management
         let stops = [];
         
@@ -1071,7 +1174,6 @@
                 cost: cost,
                 fuelUsed: fuelUsed,
                 price: price,
-                detail: `ระยะทาง ${distance} กม. ÷ อัตราสิ้นเปลือง ${consumption} กม./ลิตร = ใช้ ${fuelUsed.toFixed(2)} ลิตร × ราคา ${price.toFixed(2)} บาท/ลิตร`
             };
         }
         
@@ -1415,6 +1517,12 @@
             setInterval(fetchFuelPrices, 5 * 60 * 1000);
             updateStopsList();
             calculateTotalTime();
+            
+            // ตรวจสอบการโหลดโลโก้
+            const logoImg = document.getElementById('logoImg');
+            if (logoImg.complete && logoImg.naturalHeight === 0) {
+                handleLogoError();
+            }
         }
         
         init();
