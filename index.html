@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>LogiTrip - วางแผนการเดินทาง</title>
+    <title>LOGi Trip</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Mobile-first design */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -22,7 +23,6 @@
             margin: 0;
         }
         
-        /* Mobile-first design */
         .container {
             max-width: 100%;
             margin: 0 auto;
@@ -56,20 +56,7 @@
             font-size: 1.3rem;
         }
         
-        header p {
-            font-size: 0.8rem;
-            opacity: 0.9;
-            margin-top: 4px;
-        }
-        
-        .app-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 0;
-        }
-        
-        /* Tab navigation สำหรับมือถือ */
+        /* Mobile Tab Navigation */
         .mobile-tabs {
             display: flex;
             background: white;
@@ -107,24 +94,20 @@
             background: white;
         }
         
-        .tab-btn:active {
-            background: #e8f0fe;
-        }
-        
-        /* Panel styles */
         .panel {
             display: none;
             padding: 16px;
             background: white;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
+            flex: 1;
         }
         
         .panel.active {
             display: block;
         }
         
-        /* Form styles สำหรับมือถือ */
+        /* Form styles */
         .section-title {
             display: flex;
             align-items: center;
@@ -139,7 +122,6 @@
             margin-right: 8px;
             font-size: 1.1rem;
             width: 24px;
-            text-align: center;
         }
         
         .form-section {
@@ -164,7 +146,6 @@
         label i {
             color: #2a5298;
             width: 18px;
-            font-size: 0.9rem;
         }
         
         input, select {
@@ -172,11 +153,20 @@
             padding: 14px 16px;
             border: 2px solid #e0e0e0;
             border-radius: 12px;
-            font-size: 1rem;
+            font-size: 16px;
             transition: all 0.2s;
             background: white;
             -webkit-appearance: none;
             appearance: none;
+        }
+        
+        select {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232a5298' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 18px;
+            padding-right: 44px;
+            cursor: pointer;
         }
         
         input:focus, select:focus {
@@ -185,16 +175,7 @@
             box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
         }
         
-        /* Custom select */
-        select {
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            background-size: 16px;
-            padding-right: 40px;
-        }
-        
-        /* Time input containers */
+        /* Time inputs */
         .time-input-container, .departure-time-container {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
@@ -204,7 +185,6 @@
         
         .time-input-group, .departure-time-group {
             position: relative;
-            flex: 1;
         }
         
         .time-input-group input, .departure-time-group input {
@@ -221,7 +201,6 @@
             color: #666;
             font-weight: 600;
             font-size: 0.85rem;
-            background: #f0f0f0;
             padding: 2px 6px;
             border-radius: 4px;
             pointer-events: none;
@@ -236,11 +215,11 @@
         .hint-text {
             font-size: 0.75rem;
             color: #888;
+            font-style: italic;
             margin-top: 6px;
-            padding-left: 4px;
         }
         
-        /* Checkbox style */
+        /* ===== CHECKBOX STYLES - แก้ไขให้เห็นติ๊กถูก ===== */
         .calc-option {
             display: flex;
             align-items: center;
@@ -254,17 +233,22 @@
         }
         
         .calc-option:active {
-            background: #e8f0fe;
+            background: #e0e7ff;
+            border-color: #2a5298;
         }
         
+        /* ซ่อน checkbox จริง */
         .calc-option input[type="checkbox"] {
-            width: 22px;
-            height: 22px;
-            margin-right: 12px;
-            accent-color: #2a5298;
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            pointer-events: none;
         }
         
+        /* สร้าง checkbox ปลอม */
         .calc-option label {
+            position: relative;
             margin-bottom: 0;
             font-weight: 600;
             color: #2a5298;
@@ -272,10 +256,61 @@
             font-size: 1rem;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+            width: 100%;
+            padding-left: 35px; /* เว้นที่สำหรับ checkbox ปลอม */
+            min-height: 24px;
         }
         
-        /* Fuel cost section */
+        /* checkbox ปลอม */
+        .calc-option label:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            border: 2px solid #2a5298;
+            background: white;
+            border-radius: 6px;
+        }
+        
+        /* เมื่อ checkbox ถูกเลือก */
+        .calc-option input[type="checkbox"]:checked + label:before {
+            background: #2a5298;
+        }
+        
+        /* แสดงเครื่องหมายถูก */
+        .calc-option input[type="checkbox"]:checked + label:after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 7px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+        }
+        
+        /* Hover effect */
+        .calc-option:hover label:before {
+            border-color: #1e3c72;
+            box-shadow: 0 2px 8px rgba(42, 82, 152, 0.3);
+        }
+        
+        /* Focus state */
+        .calc-option input[type="checkbox"]:focus + label:before {
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.3);
+        }
+        
+        /* Disabled state */
+        .calc-option input[type="checkbox"]:disabled + label:before {
+            background: #e0e0e0;
+            border-color: #999;
+        }
+        
+        /* Fuel section */
         .fuel-cost-group {
             background: #f8f9fa;
             border-radius: 12px;
@@ -331,7 +366,7 @@
             border-bottom: none;
         }
         
-        /* Button styles สำหรับมือถือ */
+        /* Buttons */
         .buttons-row {
             display: flex;
             gap: 10px;
@@ -381,22 +416,19 @@
             color: white;
         }
         
-        .btn i {
-            font-size: 1rem;
-        }
-        
         /* Stops list */
         .stops-section {
             margin-top: 8px;
         }
         
         .stops-list {
-            max-height: 300px;
+            max-height: 200px;
             overflow-y: auto;
-            border-radius: 12px;
-            background: #f8f9fa;
-            padding: 12px;
-            margin-bottom: 8px;
+            border: 2px dashed #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
             -webkit-overflow-scrolling: touch;
         }
         
@@ -455,20 +487,28 @@
             font-size: 0.9rem;
         }
         
-        /* Results panel */
+        /* Results Section */
+        .results-section {
+            padding: 0;
+        }
+        
+        .results-controls {
+            margin-bottom: 20px;
+        }
+        
         .results-display {
             background: white;
-            padding: 16px;
-            border-radius: 16px;
+            padding: 20px;
+            border-radius: 10px;
             border: 1px solid #e0e0e0;
-            margin-top: 8px;
+            overflow-y: auto;
+            max-height: calc(100vh - 250px);
         }
         
         .result-item {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
+            padding: 10px 0;
             border-bottom: 1px solid #eee;
         }
         
@@ -479,101 +519,85 @@
         .result-label {
             font-weight: 600;
             color: #555;
-            font-size: 0.9rem;
+            font-size: 1.05rem;
         }
         
         .result-value {
             font-weight: 700;
             color: #1e3c72;
-            font-size: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .time-display {
+            font-size: 1.2rem;
         }
         
         .total-time {
-            background: #e8f4ff;
-            padding: 16px;
-            border-radius: 12px;
-            margin: 16px 0;
+            background-color: #e8f4ff;
+            padding: 14px;
+            border-radius: 10px;
+            margin-top: 10px;
             text-align: center;
-            font-weight: 600;
+            font-size: 1.4rem;
+            font-weight: 700;
             color: #1e3c72;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            flex-wrap: wrap;
         }
         
         .total-time-value {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #2a5298;
-        }
-        
-        .arrival-time-section, .fuel-cost-section {
-            padding: 16px;
-            border-radius: 12px;
-            margin: 12px 0;
-            text-align: center;
+            font-size: 1.9rem;
+            margin-left: 10px;
         }
         
         .arrival-time-section {
-            background: #e8f4ff;
+            background-color: #e8f4ff;
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: center;
             border: 2px solid #2a5298;
         }
         
-        .fuel-cost-section {
-            background: #e8f8e8;
-            border: 2px solid #28a745;
-        }
-        
-        .arrival-label, .fuel-cost-label {
-            font-size: 0.85rem;
+        .arrival-label {
+            font-size: 1rem;
             color: #555;
-            margin-bottom: 6px;
-        }
-        
-        .arrival-value, .fuel-cost-value {
-            font-size: 1.5rem;
-            font-weight: 700;
+            margin-bottom: 8px;
         }
         
         .arrival-value {
+            font-size: 1.8rem;
+            font-weight: 700;
             color: #1e3c72;
         }
         
+        .fuel-cost-section {
+            background-color: #f0f8f0;
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: center;
+            border: 2px solid #28a745;
+        }
+        
+        .fuel-cost-label {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 8px;
+        }
+        
         .fuel-cost-value {
+            font-size: 1.8rem;
+            font-weight: 700;
             color: #28a745;
         }
         
-        /* Scrollbar สำหรับมือถือ */
-        .panel::-webkit-scrollbar, .stops-list::-webkit-scrollbar {
-            width: 4px;
+        .fuel-details {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 10px;
+            text-align: center;
         }
         
-        .panel::-webkit-scrollbar-thumb, .stops-list::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 4px;
-        }
-        
-        /* Floating action button สำหรับเพิ่มจุดแวะพัก */
-        .fab-container {
-            display: none;
-        }
-        
-        /* Quick actions */
-        .quick-actions {
-            display: flex;
-            gap: 8px;
-            margin: 12px 0;
-        }
-        
-        .quick-actions .btn {
-            flex: 1;
-            padding: 12px;
-        }
-        
-        /* Responsive สำหรับแท็บเล็ต */
+        /* Tablet styles */
         @media (min-width: 768px) {
             .container {
                 max-width: 1400px;
@@ -595,22 +619,26 @@
             }
             
             .app-content {
+                display: flex;
                 flex-direction: row;
                 height: calc(100vh - 140px);
+                overflow: hidden;
             }
             
-            .panel.input-panel, .panel.results-panel {
+            .panel.input-panel {
                 flex: 1;
+                max-width: 450px;
+                border-right: 1px solid #e0e0e0;
                 overflow-y: auto;
             }
             
-            .input-panel {
-                border-right: 1px solid #e0e0e0;
-                max-width: 450px;
+            .panel.stops-panel {
+                display: none;
             }
             
-            .results-panel {
+            .panel.results-panel {
                 flex: 2;
+                overflow-y: auto;
             }
             
             .form-row {
@@ -618,28 +646,17 @@
                 grid-template-columns: 1fr 1fr;
                 gap: 12px;
             }
-            
-            .btn:hover {
-                transform: translateY(-2px);
-            }
-            
-            .btn:active {
-                transform: scale(0.98);
-            }
         }
         
-        /* ปรับปรุงการแตะบนมือถือ */
+        /* Mobile adjustments */
         @media (max-width: 767px) {
-            input, select, .btn {
-                font-size: 16px; /* ป้องกันการซูมอัตโนมัติ */
-            }
-            
-            .stop-actions .btn {
-                padding: 10px 14px;
-            }
-            
-            .btn {
+            .results-display {
+                max-height: none;
                 padding: 16px;
+            }
+            
+            .total-time {
+                font-size: 1.2rem;
             }
             
             .total-time-value {
@@ -649,26 +666,13 @@
             .arrival-value, .fuel-cost-value {
                 font-size: 1.6rem;
             }
-        }
-        
-        /* จัดการกับจอเล็กมาก */
-        @media (max-width: 360px) {
-            header h1 {
-                font-size: 1.3rem;
+            
+            .result-label {
+                font-size: 0.95rem;
             }
             
-            .tab-btn {
-                font-size: 0.8rem;
-                padding: 12px 4px;
-            }
-            
-            .btn {
-                padding: 12px;
-                font-size: 0.85rem;
-            }
-            
-            .total-time-value {
-                font-size: 1.4rem;
+            .result-value {
+                font-size: 1.1rem;
             }
         }
     </style>
@@ -676,11 +680,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>
-                <i class="fas fa-route"></i>
-                LogiTrip
-            </h1>
-            <p>วางแผนการเดินทางของคุณ</p>
+            <h1><i class="fas fa-route"></i>LOGi Trip</h1>
         </header>
         
         <!-- Mobile Tab Navigation -->
@@ -700,116 +700,67 @@
         </div>
         
         <div class="app-content">
-            <!-- แผงกรอกข้อมูล -->
+            <!-- Input Panel -->
             <div class="panel input-panel active" id="inputPanel">
+                <!-- ข้อมูลการเดินทาง -->
                 <section class="form-section">
                     <h2 class="section-title">
-                        <i class="fas fa-map-marker-alt"></i>
+                        <i class="fas fa-map-marker-alt"></i> 
                         ข้อมูลการเดินทาง
                     </h2>
                     
                     <div class="form-group">
-                        <label>
-                            <i class="fas fa-play-circle"></i>
-                            จุดเริ่มต้น
-                        </label>
-                        <input type="text" id="startPoint" placeholder="เช่น บ้าน, ที่ทำงาน" value="A">
+                        <label for="startPoint"><i class="fas fa-play-circle"></i> จุดเริ่มต้น</label>
+                        <input type="text" id="startPoint" placeholder="กรอกจุดเริ่มต้น" value="A">
                     </div>
                     
                     <div class="form-group">
-                        <label>
-                            <i class="fas fa-flag-checkered"></i>
-                            จุดหมายปลายทาง
-                        </label>
-                        <input type="text" id="endPoint" placeholder="เช่น สนามบิน, ห้าง" value="B">
+                        <label for="endPoint"><i class="fas fa-flag-checkered"></i> จุดหมายปลายทาง</label>
+                        <input type="text" id="endPoint" placeholder="กรอกจุดหมายปลายทาง" value="B">
                     </div>
                     
                     <div class="form-group">
-                        <label>
-                            <i class="fas fa-clock"></i>
-                            เวลาออกเดินทาง
-                        </label>
+                        <label for="departureTime"><i class="fas fa-clock"></i> เวลาออกเดินทาง</label>
                         <div class="departure-time-container">
-                            <div class="departure-time-group" data-label="ชม.">
-                                <input type="number" id="departureHour" placeholder="0" min="0" max="23" inputmode="numeric">
+                            <div class="departure-time-group" data-label="ชม">
+                                <input type="number" id="departureHour" placeholder="0" min="0" max="23">
                             </div>
-                            <span class="time-separator">:</span>
+                            <div class="time-separator">:</div>
                             <div class="departure-time-group" data-label="นาที">
-                                <input type="number" id="departureMinute" placeholder="0" min="0" max="59" inputmode="numeric">
+                                <input type="number" id="departureMinute" placeholder="0" min="0" max="59">
                             </div>
                         </div>
-                        <div class="hint-text">รูปแบบ 24 ชั่วโมง (ไม่ระบุ = ไม่คำนวณเวลาถึง)</div>
+                        <div class="hint-text">รูปแบบ 24 ชั่วโมง</div>
                     </div>
                     
-                    <div class="form-group">
-                        <label>
-                            <i class="fas fa-hourglass-half"></i>
-                            ระยะเวลาเดินทาง
-                        </label>
-                        <div class="time-input-container">
-                            <div class="time-input-group" data-label="ชม.">
-                                <input type="number" id="travelHours" placeholder="0" min="0" inputmode="numeric">
-                            </div>
-                            <span class="time-separator">:</span>
-                            <div class="time-input-group" data-label="นาที">
-                                <input type="number" id="travelMinutes" placeholder="0" min="0" max="59" inputmode="numeric">
-                            </div>
-                        </div>
-                        <div class="hint-text">เวลาที่ใช้เดินทาง (ไม่รวมจุดแวะพัก)</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>
-                            <i class="fas fa-car"></i>
-                            วิธีการเดินทาง
-                        </label>
-                        <select id="transport">
-                            <option value="car">รถยนต์</option>
-                            <option value="motorcycle">รถจักรยานยนต์</option>
-                            <option value="public">ขนส่งสาธารณะ</option>
-                            <option value="walk">เดิน</option>
-                            <option value="bike">จักรยาน</option>
-                        </select>
-                    </div>
-                    
-                    <!-- ตัวเลือกคำนวณค่าน้ำมัน -->
-                    <div class="calc-option" onclick="document.getElementById('useFuelCalc').click()">
+                    <!-- ตัวเลือกการคำนวณค่าน้ำมัน - ปรับปรุงใหม่ -->
+                    <div class="calc-option">
                         <input type="checkbox" id="useFuelCalc">
                         <label for="useFuelCalc">
-                            <i class="fas fa-gas-pump"></i>
-                            คำนวณค่าน้ำมัน
+                            <i class="fas fa-gas-pump"></i> คำนวณค่าน้ำมัน
                         </label>
                     </div>
                     
-                    <!-- ส่วนกรอกข้อมูลน้ำมัน -->
+                    <!-- ส่วนกรอกข้อมูลสำหรับคำนวณค่าน้ำมัน -->
                     <div id="fuelCostGroup" class="fuel-cost-group">
                         <div class="form-group">
-                            <label>
-                                <i class="fas fa-road"></i>
-                                ระยะทาง
-                            </label>
+                            <label for="distance"><i class="fas fa-road"></i> ระยะทาง</label>
                             <div class="unit-container">
-                                <input type="number" id="distance" placeholder="0" min="0" step="0.1" inputmode="decimal">
+                                <input type="number" id="distance" placeholder="0" min="0" step="0.1">
                                 <span class="unit-text">กม.</span>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label>
-                                <i class="fas fa-oil-can"></i>
-                                อัตราสิ้นเปลือง
-                            </label>
+                            <label for="fuelConsumption"><i class="fas fa-oil-can"></i> อัตราสิ้นเปลืองน้ำมัน</label>
                             <div class="unit-container">
-                                <input type="number" id="fuelConsumption" placeholder="0" min="0" step="0.1" inputmode="decimal">
+                                <input type="number" id="fuelConsumption" placeholder="0" min="0" step="0.1">
                                 <span class="unit-text">กม./ลิตร</span>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label>
-                                <i class="fas fa-gas-pump"></i>
-                                ประเภทน้ำมัน
-                            </label>
+                            <label for="fuelType"><i class="fas fa-gas-pump"></i> ประเภทน้ำมัน</label>
                             <select id="fuelType">
                                 <option value="95">เบนซิน 95</option>
                                 <option value="91">เบนซิน 91</option>
@@ -819,6 +770,7 @@
                             </select>
                         </div>
                         
+                        <!-- แสดงราคาน้ำมัน -->
                         <div class="fuel-price-info">
                             <div class="fuel-price-item">
                                 <span>เบนซิน 95:</span>
@@ -832,74 +784,91 @@
                                 <span>ดีเซล:</span>
                                 <span id="priceDiesel">กำลังโหลด...</span>
                             </div>
+                            <div class="hint-text">ข้อมูลราคาน้ำมันอัปเดตล่าสุด</div>
                         </div>
+                    </div>
+                    
+                    <!-- ส่วนกรอกเวลาเดินทาง -->
+                    <div class="form-group">
+                        <label for="travelTime"><i class="fas fa-hourglass-half"></i> ระยะเวลาเดินทาง</label>
+                        <div class="time-input-container">
+                            <div class="time-input-group" data-label="ชม">
+                                <input type="number" id="travelHours" placeholder="0" min="0" max="99">
+                            </div>
+                            <div class="time-separator">:</div>
+                            <div class="time-input-group" data-label="นาที">
+                                <input type="number" id="travelMinutes" placeholder="0" min="0" max="59">
+                            </div>
+                        </div>
+                        <div class="hint-text">เวลาที่ใช้ในการเดินทาง (ไม่รวมจุดแวะพัก)</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="transport"><i class="fas fa-car"></i> วิธีการเดินทาง</label>
+                        <select id="transport">
+                            <option value="car">รถยนต์</option>
+                            <option value="motorcycle">รถจักรยานยนต์</option>
+                            <option value="public">ขนส่งสาธารณะ</option>
+                            <option value="walk">เดิน</option>
+                            <option value="bike">จักรยาน</option>
+                        </select>
                     </div>
                 </section>
                 
                 <!-- ปุ่มดำเนินการ -->
-                <div class="quick-actions">
+                <div class="buttons-row">
                     <button class="btn btn-secondary" id="resetBtn">
-                        <i class="fas fa-redo-alt"></i>
-                        รีเซ็ต
+                        <i class="fas fa-redo-alt"></i> รีเซ็ต
                     </button>
                     <button class="btn btn-primary" id="calculateBtn">
-                        <i class="fas fa-calculator"></i>
-                        คำนวณ
+                        <i class="fas fa-calculator"></i> คำนวณ
                     </button>
                 </div>
             </div>
             
-            <!-- แผงจุดแวะพัก -->
+            <!-- Stops Panel -->
             <div class="panel" id="stopsPanel">
                 <section class="stops-section">
-                    <h2 class="section-title">
-                        <i class="fas fa-map-pin"></i>
-                        จุดแวะพัก
-                    </h2>
+                    <h2 class="section-title"><i class="fas fa-map-pin"></i> จุดแวะพัก</h2>
                     
                     <div class="form-group">
-                        <label>
-                            <i class="fas fa-store"></i>
-                            ชื่อจุดแวะพัก
-                        </label>
+                        <label for="stopName"><i class="fas fa-store"></i> ชื่อจุดแวะพัก</label>
                         <input type="text" id="stopName" placeholder="เช่น ร้านกาแฟ, ปั๊มน้ำมัน">
                     </div>
                     
                     <div class="form-group">
-                        <label>
-                            <i class="fas fa-hourglass-half"></i>
-                            เวลาที่แวะ (นาที)
-                        </label>
-                        <input type="number" id="stopTime" placeholder="0" min="1" inputmode="numeric">
+                        <label for="stopTime"><i class="fas fa-hourglass-half"></i> เวลาแวะพัก (นาที)</label>
+                        <input type="number" id="stopTime" placeholder="0" min="1">
                     </div>
                     
                     <div class="buttons-row">
                         <button class="btn btn-success" id="addStopBtn">
-                            <i class="fas fa-plus-circle"></i>
-                            เพิ่ม
+                            <i class="fas fa-plus-circle"></i> เพิ่มจุดแวะพัก
                         </button>
                         <button class="btn btn-secondary" id="clearStopsBtn">
-                            <i class="fas fa-trash-alt"></i>
-                            ล้างทั้งหมด
+                            <i class="fas fa-trash-alt"></i> ล้างทั้งหมด
                         </button>
                     </div>
                     
                     <div class="stops-list" id="stopsList">
                         <div class="empty-message" id="emptyStopsMessage">
-                            <i class="fas fa-info-circle"></i> ยังไม่มีจุดแวะพัก<br>
-                            <span style="font-size: 0.8rem;">เพิ่มจุดแวะพักด้านบน</span>
+                            <i class="fas fa-info-circle"></i> ยังไม่มีจุดแวะพัก
                         </div>
                     </div>
                 </section>
             </div>
             
-            <!-- แผงแสดงผลลัพธ์ -->
+            <!-- Results Panel -->
             <div class="panel results-panel" id="resultsPanel">
                 <section class="results-section">
-                    <h2 class="section-title">
-                        <i class="fas fa-calculator"></i>
-                        ผลการคำนวณ
-                    </h2>
+                    <div class="results-controls">
+                        <h2 class="section-title"><i class="fas fa-calculator"></i> ผลการคำนวณเวลาเดินทาง</h2>
+                        <div class="buttons-row">
+                            <button class="btn btn-secondary" id="copyResultsBtn">
+                                <i class="fas fa-copy"></i> คัดลอกผลลัพธ์
+                            </button>
+                        </div>
+                    </div>
                     
                     <div class="results-display" id="resultsDisplay">
                         <div class="result-item">
@@ -907,54 +876,45 @@
                             <span class="result-value" id="resultStart">A</span>
                         </div>
                         <div class="result-item">
-                            <span class="result-label">จุดหมาย:</span>
+                            <span class="result-label">จุดหมายปลายทาง:</span>
                             <span class="result-value" id="resultEnd">B</span>
                         </div>
                         <div class="result-item">
-                            <span class="result-label">การเดินทาง:</span>
+                            <span class="result-label">วิธีการเดินทาง:</span>
                             <span class="result-value" id="resultTransport">รถยนต์</span>
                         </div>
                         <div class="result-item">
                             <span class="result-label">เวลาออกเดินทาง:</span>
-                            <span class="result-value" id="resultDepartureTime">-</span>
+                            <span class="result-value time-display" id="resultDepartureTime"> </span>
                         </div>
                         <div class="result-item">
-                            <span class="result-label">เวลาเดินทาง:</span>
-                            <span class="result-value" id="resultBaseTime">0 min</span>
+                            <span class="result-label">เวลาเดินทางพื้นฐาน:</span>
+                            <span class="result-value time-display" id="resultBaseTime"> </span>
                         </div>
                         <div class="result-item">
-                            <span class="result-label">จุดแวะพัก:</span>
+                            <span class="result-label">จำนวนจุดแวะพัก:</span>
                             <span class="result-value" id="resultStopsCount">0</span>
                         </div>
                         <div class="result-item">
                             <span class="result-label">เวลาพักทั้งหมด:</span>
-                            <span class="result-value" id="resultTotalStopTime">0 min</span>
+                            <span class="result-value time-display" id="resultTotalStopTime"> </span>
                         </div>
                         
                         <div class="total-time">
-                            <span>รวมเวลา:</span>
-                            <span class="total-time-value" id="resultTotalTime">0 min</span>
+                            <span>เวลาเดินทางทั้งหมด: </span>
+                            <span class="total-time-value" id="resultTotalTime"> </span>
                         </div>
                         
-                        <div class="arrival-time-section" id="arrivalSection" style="display: none;">
-                            <div class="arrival-label">
-                                <i class="fas fa-clock"></i> เวลาถึงโดยประมาณ
-                            </div>
-                            <div class="arrival-value" id="resultArrivalTime">--:--</div>
+                        <div class="arrival-time-section" id="arrivalSection">
+                            <div class="arrival-label">เวลาถึงโดยประมาณ:</div>
+                            <div class="arrival-value" id="resultArrivalTime"> </div>
                         </div>
                         
+                        <!-- ส่วนแสดงผลค่าน้ำมัน -->
                         <div id="fuelCostResult" class="fuel-cost-section" style="display: none;">
-                            <div class="fuel-cost-label">
-                                <i class="fas fa-gas-pump"></i> ค่าน้ำมันโดยประมาณ
-                            </div>
+                            <div class="fuel-cost-label">ค่าน้ำมันโดยประมาณ</div>
                             <div class="fuel-cost-value" id="resultFuelCost">0 บาท</div>
-                            <div class="fuel-details" id="fuelDetails" style="font-size: 0.7rem; margin-top: 8px;"></div>
-                        </div>
-                        
-                        <div style="margin-top: 16px;">
-                            <button class="btn btn-primary" id="copyResultsBtn" style="width: 100%;">
-                                <i class="fas fa-copy"></i> คัดลอกผลลัพธ์
-                            </button>
+                            <div class="fuel-details" id="fuelDetails"></div>
                         </div>
                     </div>
                 </section>
@@ -1005,11 +965,11 @@
         
         // Fuel prices
         let fuelPrices = {
-            '95': 35.94,
-            '91': 34.76,
-            'diesel': 33.94,
-            'e20': 34.54,
-            'e85': 30.29
+            '95': 30.55,   
+            '91': 30.18,   
+            'diesel': 30.44, 
+            'e20': 28.34,  
+            'e85': 26.29  
         };
         
         // Mobile tab handling
@@ -1024,14 +984,10 @@
                 panels.forEach(p => p.classList.remove('active'));
                 
                 tab.classList.add('active');
+                document.getElementById(targetPanel + 'Panel').classList.add('active');
                 
-                if (targetPanel === 'input') {
-                    document.getElementById('inputPanel').classList.add('active');
-                } else if (targetPanel === 'stops') {
-                    document.getElementById('stopsPanel').classList.add('active');
-                } else if (targetPanel === 'results') {
-                    document.getElementById('resultsPanel').classList.add('active');
-                    calculateTotalTime(); // รีคำนวณเมื่อมาเห็นผลลัพธ์
+                if (targetPanel === 'results') {
+                    calculateTotalTime();
                 }
             });
         });
@@ -1042,16 +998,24 @@
         }
         
         function minutesToHoursMinutes(totalMinutes) {
-            if (totalMinutes === 0) return '0 min';
+            if (!totalMinutes && totalMinutes !== 0) return '0 min';
             const hours = Math.floor(totalMinutes / 60);
             const minutes = totalMinutes % 60;
             
-            if (hours === 0) return `${minutes} min`;
-            if (minutes === 0) return `${hours} hr`;
-            return `${hours} hr ${minutes} min`;
+            if (hours === 0) {
+                return `${minutes} min`;
+            } else if (minutes === 0) {
+                return `${hours} hr`;
+            } else {
+                return `${hours} hr ${minutes} min`;
+            }
         }
         
-        function validateTimeInput(hoursInput, minutesInput, maxHour = 23) {
+        function timeToMinutes(hours, minutes) {
+            return (parseInt(hours) || 0) * 60 + (parseInt(minutes) || 0);
+        }
+        
+        function validateTimeInput(hoursInput, minutesInput, maxHour = 99) {
             let hours = parseInt(hoursInput.value) || 0;
             let minutes = parseInt(minutesInput.value) || 0;
             
@@ -1075,19 +1039,20 @@
             return { hours, minutes };
         }
         
-        function calculateArrivalTime(departureHour, departureMinute, totalMinutes) {
-            const departureTotal = (departureHour || 0) * 60 + (departureMinute || 0);
-            const arrivalTotal = departureTotal + totalMinutes;
+        function calculateArrivalTime(departureHour, departureMinute, totalTravelMinutes) {
+            let departureTotalMinutes = (parseInt(departureHour) || 0) * 60 + (parseInt(departureMinute) || 0);
+            let arrivalTotalMinutes = departureTotalMinutes + (parseInt(totalTravelMinutes) || 0);
             
-            const hour = Math.floor(arrivalTotal / 60) % 24;
-            const minute = arrivalTotal % 60;
-            const day = Math.floor(arrivalTotal / (24 * 60));
+            let arrivalHour = Math.floor(arrivalTotalMinutes / 60) % 24;
+            let arrivalMinute = arrivalTotalMinutes % 60;
+            let nextDay = Math.floor(arrivalTotalMinutes / (24 * 60));
+            let dayText = nextDay > 0 ? ` (+${nextDay} วัน)` : '';
             
             return {
-                hour,
-                minute,
-                day,
-                formatted: `${formatTimeNumber(hour)}:${formatTimeNumber(minute)}${day > 0 ? ` +${day}` : ''}`
+                hour: arrivalHour,
+                minute: arrivalMinute,
+                formattedTime: `${formatTimeNumber(arrivalHour)}:${formatTimeNumber(arrivalMinute)}${dayText}`,
+                nextDay: nextDay
             };
         }
         
@@ -1103,53 +1068,43 @@
             const cost = fuelUsed * price;
             
             return {
-                cost,
-                fuelUsed,
-                price,
-                detail: `${distance.toFixed(1)} กม. ÷ ${consumption.toFixed(1)} กม./ลิตร = ${fuelUsed.toFixed(2)} ลิตร × ${price.toFixed(2)} บาท`
+                cost: cost,
+                fuelUsed: fuelUsed,
+                price: price,
+                detail: `ระยะทาง ${distance} กม. ÷ อัตราสิ้นเปลือง ${consumption} กม./ลิตร = ใช้ ${fuelUsed.toFixed(2)} ลิตร × ราคา ${price.toFixed(2)} บาท/ลิตร`
             };
         }
         
         // Main calculation
         function calculateTotalTime() {
-            // Get values
             const startPoint = elements.startPoint.value.trim() || '-';
             const endPoint = elements.endPoint.value.trim() || '-';
             const transport = elements.transport.options[elements.transport.selectedIndex].text;
             
-            // Validate time inputs
-            const departure = validateTimeInput(elements.departureHour, elements.departureMinute, 23);
-            const travel = validateTimeInput(elements.travelHours, elements.travelMinutes, 99);
+            const departureTime = validateTimeInput(elements.departureHour, elements.departureMinute, 23);
+            const departureHour = departureTime.hours;
+            const departureMinute = departureTime.minutes;
             
-            const travelMinutes = (travel.hours * 60) + travel.minutes;
+            const formattedDepartureTime = departureHour === 0 && departureMinute === 0 ? 
+                '' : `${formatTimeNumber(departureHour)}:${formatTimeNumber(departureMinute)}`;
+            results.departureTime.textContent = formattedDepartureTime || '-';
+            
+            const travelTime = validateTimeInput(elements.travelHours, elements.travelMinutes, 99);
+            const travelMinutes = timeToMinutes(travelTime.hours, travelTime.minutes);
+            
             const totalStopTime = stops.reduce((sum, stop) => sum + stop.time, 0);
-            const totalTime = travelMinutes + totalStopTime;
+            const totalTimeMinutes = travelMinutes + totalStopTime;
             
-            // Update basic results
-            results.start.textContent = startPoint;
-            results.end.textContent = endPoint;
-            results.transport.textContent = transport;
+            let arrivalTimeText = '-';
             
-            // Departure time
-            if (departure.hours === 0 && departure.minutes === 0) {
-                results.departureTime.textContent = '-';
-                elements.arrivalSection.style.display = 'none';
-            } else {
-                results.departureTime.textContent = `${formatTimeNumber(departure.hours)}:${formatTimeNumber(departure.minutes)}`;
-                
-                // Calculate arrival time
-                const arrival = calculateArrivalTime(departure.hours, departure.minutes, totalTime);
-                results.arrivalTime.textContent = arrival.formatted;
+            if ((departureHour !== 0 || departureMinute !== 0) && totalTimeMinutes > 0) {
+                const arrivalTime = calculateArrivalTime(departureHour, departureMinute, totalTimeMinutes);
+                arrivalTimeText = arrivalTime.formattedTime;
                 elements.arrivalSection.style.display = 'block';
+            } else {
+                elements.arrivalSection.style.display = 'none';
             }
             
-            // Travel times
-            results.baseTime.textContent = minutesToHoursMinutes(travelMinutes);
-            results.stopsCount.textContent = stops.length;
-            results.totalStopTime.textContent = minutesToHoursMinutes(totalStopTime);
-            results.totalTime.textContent = minutesToHoursMinutes(totalTime);
-            
-            // Fuel calculation
             if (elements.useFuelCalc.checked) {
                 const fuelResult = calculateFuelCost();
                 if (fuelResult) {
@@ -1162,29 +1117,38 @@
             } else {
                 results.fuelCostResult.style.display = 'none';
             }
+            
+            results.start.textContent = startPoint;
+            results.end.textContent = endPoint;
+            results.transport.textContent = transport;
+            results.baseTime.textContent = minutesToHoursMinutes(travelMinutes);
+            results.stopsCount.textContent = stops.length;
+            results.totalStopTime.textContent = minutesToHoursMinutes(totalStopTime);
+            results.totalTime.textContent = minutesToHoursMinutes(totalTimeMinutes);
+            results.arrivalTime.textContent = arrivalTimeText;
         }
         
-        // Stop management
+        // Stop management functions
         function addStop() {
-            const name = elements.stopName.value.trim();
-            const time = parseInt(elements.stopTime.value) || 0;
+            const stopName = elements.stopName.value.trim();
+            const stopTime = parseInt(elements.stopTime.value) || 0;
             
-            if (!name) {
+            if (!stopName) {
                 alert('กรุณากรอกชื่อจุดแวะพัก');
                 elements.stopName.focus();
                 return;
             }
             
-            if (time <= 0) {
-                alert('กรุณากรอกเวลาแวะพัก (มากกว่า 0 นาที)');
+            if (stopTime <= 0) {
+                alert('กรุณากรอกเวลาแวะพักที่ถูกต้อง (มากกว่า 0 นาที)');
                 elements.stopTime.focus();
                 return;
             }
             
             stops.push({
                 id: Date.now(),
-                name,
-                time
+                name: stopName,
+                time: stopTime
             });
             
             elements.stopName.value = '';
@@ -1192,9 +1156,6 @@
             
             updateStopsList();
             calculateTotalTime();
-            
-            // สั่นเล็กน้อยเมื่อเพิ่มสำเร็จ
-            if (navigator.vibrate) navigator.vibrate(50);
         }
         
         function updateStopsList() {
@@ -1206,76 +1167,75 @@
             }
             
             stops.forEach(stop => {
-                const stopEl = document.createElement('div');
-                stopEl.className = 'stop-item';
-                stopEl.innerHTML = `
+                const stopElement = document.createElement('div');
+                stopElement.className = 'stop-item';
+                stopElement.innerHTML = `
                     <div class="stop-details">
                         <div class="stop-name">${stop.name}</div>
-                        <div class="stop-time">
-                            <i class="fas fa-clock"></i> ${stop.time} นาที
-                        </div>
+                        <div class="stop-time">เวลาแวะพัก: ${stop.time} นาที</div>
                     </div>
                     <div class="stop-actions">
-                        <button class="btn btn-secondary edit-stop" data-id="${stop.id}" style="padding: 8px;">
+                        <button class="btn btn-secondary edit-stop-btn" data-id="${stop.id}">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn btn-danger delete-stop" data-id="${stop.id}" style="padding: 8px;">
+                        <button class="btn btn-danger delete-stop-btn" data-id="${stop.id}">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
                 `;
                 
-                elements.stopsList.appendChild(stopEl);
+                elements.stopsList.appendChild(stopElement);
             });
             
-            // Add event listeners
-            document.querySelectorAll('.edit-stop').forEach(btn => {
-                btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.edit-stop-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
                     e.stopPropagation();
-                    const id = parseInt(btn.dataset.id);
-                    editStop(id);
+                    const stopId = parseInt(this.dataset.id);
+                    editStop(stopId);
                 });
             });
             
-            document.querySelectorAll('.delete-stop').forEach(btn => {
-                btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.delete-stop-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
                     e.stopPropagation();
-                    const id = parseInt(btn.dataset.id);
-                    deleteStop(id);
+                    const stopId = parseInt(this.dataset.id);
+                    deleteStop(stopId);
                 });
             });
         }
         
-        function editStop(id) {
-            const stop = stops.find(s => s.id === id);
+        function editStop(stopId) {
+            const stop = stops.find(s => s.id === stopId);
             if (!stop) return;
             
             elements.stopName.value = stop.name;
             elements.stopTime.value = stop.time;
             
-            stops = stops.filter(s => s.id !== id);
+            stops = stops.filter(s => s.id !== stopId);
             updateStopsList();
             calculateTotalTime();
             
-            // สลับไปที่แท็บกรอกข้อมูล
             document.querySelector('[data-tab="stops"]').click();
             elements.stopName.focus();
         }
         
-        function deleteStop(id) {
-            if (confirm('ลบจุดแวะพักนี้?')) {
-                stops = stops.filter(s => s.id !== id);
+        function deleteStop(stopId) {
+            if (confirm('คุณต้องการลบจุดแวะพักนี้ใช่หรือไม่?')) {
+                stops = stops.filter(stop => stop.id !== stopId);
                 updateStopsList();
                 calculateTotalTime();
-                
-                if (navigator.vibrate) navigator.vibrate(30);
             }
         }
         
         function clearAllStops() {
-            if (stops.length === 0) return;
+            if (stops.length === 0) {
+                alert('ไม่มีจุดแวะพักให้ลบ');
+                return;
+            }
             
-            if (confirm('ลบจุดแวะพักทั้งหมด?')) {
+            if (confirm('คุณต้องการลบจุดแวะพักทั้งหมดใช่หรือไม่?')) {
                 stops = [];
                 updateStopsList();
                 calculateTotalTime();
@@ -1283,63 +1243,88 @@
         }
         
         function resetAll() {
-            if (confirm('รีเซ็ตข้อมูลทั้งหมด?')) {
+            if (confirm('คุณต้องการรีเซ็ตข้อมูลทั้งหมดใช่หรือไม่?')) {
                 elements.startPoint.value = 'A';
                 elements.endPoint.value = 'B';
                 elements.departureHour.value = '';
                 elements.departureMinute.value = '';
                 elements.travelHours.value = '';
                 elements.travelMinutes.value = '';
-                elements.transport.value = 'car';
-                elements.useFuelCalc.checked = false;
-                elements.fuelCostGroup.classList.remove('show');
                 elements.distance.value = '';
                 elements.fuelConsumption.value = '';
+                elements.fuelType.value = '95';
+                elements.useFuelCalc.checked = false;
+                elements.fuelCostGroup.classList.remove('show');
+                elements.transport.value = 'car';
+                elements.stopName.value = '';
+                elements.stopTime.value = '';
                 
                 stops = [];
                 updateStopsList();
                 calculateTotalTime();
                 
-                // กลับไปแท็บแรก
                 document.querySelector('[data-tab="input"]').click();
             }
         }
         
         async function copyResults() {
-            const text = `LogiTrip - ผลการเดินทาง
-------------------------
-จาก: ${results.start.textContent}
-ไป: ${results.end.textContent}
-เวลาเดินทาง: ${results.totalTime.textContent}
-${results.arrivalTime.textContent !== '--:--' ? 'ถึงเวลา: ' + results.arrivalTime.textContent : ''}
-${results.fuelCostResult.style.display !== 'none' ? 'ค่าน้ำมัน: ' + results.fuelCost.textContent : ''}
-------------------------
-คำนวณเมื่อ ${new Date().toLocaleString('th-TH')}`;
-            
             try {
-                await navigator.clipboard.writeText(text);
-                alert('คัดลอกแล้ว!');
+                const resultsData = {
+                    startPoint: document.getElementById('resultStart').textContent,
+                    endPoint: document.getElementById('resultEnd').textContent,
+                    transport: document.getElementById('resultTransport').textContent,
+                    departureTime: document.getElementById('resultDepartureTime').textContent,
+                    baseTime: document.getElementById('resultBaseTime').textContent,
+                    stopsCount: document.getElementById('resultStopsCount').textContent,
+                    totalStopTime: document.getElementById('resultTotalStopTime').textContent,
+                    totalTime: document.getElementById('resultTotalTime').textContent,
+                    arrivalTime: document.getElementById('resultArrivalTime').textContent,
+                    fuelCost: document.getElementById('useFuelCalc').checked ? document.getElementById('resultFuelCost').textContent : null
+                };
                 
-                const btn = document.getElementById('copyResultsBtn');
-                btn.innerHTML = '<i class="fas fa-check"></i> คัดลอกแล้ว';
-                setTimeout(() => {
-                    btn.innerHTML = '<i class="fas fa-copy"></i> คัดลอกผลลัพธ์';
-                }, 2000);
-            } catch (err) {
-                alert('ไม่สามารถคัดลอกได้');
+                let formattedText = `LogiTrip - ผลการคำนวณเวลาเดินทาง\n`;
+                formattedText += `========================\n`;
+                formattedText += `จุดเริ่มต้น: ${resultsData.startPoint}\n`;
+                formattedText += `จุดหมายปลายทาง: ${resultsData.endPoint}\n`;
+                formattedText += `วิธีการเดินทาง: ${resultsData.transport}\n`;
+                
+                if (resultsData.departureTime && resultsData.departureTime !== '-') {
+                    formattedText += `เวลาออกเดินทาง: ${resultsData.departureTime}\n`;
+                }
+                
+                formattedText += `เวลาเดินทางพื้นฐาน: ${resultsData.baseTime}\n`;
+                formattedText += `จำนวนจุดแวะพัก: ${resultsData.stopsCount}\n`;
+                formattedText += `เวลาพักทั้งหมด: ${resultsData.totalStopTime}\n`;
+                formattedText += `เวลาเดินทางทั้งหมด: ${resultsData.totalTime}\n`;
+                formattedText += `========================\n`;
+                
+                if (resultsData.arrivalTime && resultsData.arrivalTime !== '-') {
+                    formattedText += `เวลาถึงโดยประมาณ: ${resultsData.arrivalTime}\n`;
+                }
+                
+                if (resultsData.fuelCost) {
+                    formattedText += `ค่าน้ำมันโดยประมาณ: ${resultsData.fuelCost}\n`;
+                }
+                
+                formattedText += `\nอัปเดตเมื่อ: ${new Date().toLocaleString('th-TH')}`;
+                
+                await navigator.clipboard.writeText(formattedText);
+                alert('คัดลอกผลลัพธ์เรียบร้อยแล้ว!');
+                
+            } catch (error) {
+                alert('ไม่สามารถคัดลอกผลลัพธ์ได้');
             }
         }
         
         // Fetch fuel prices
         async function fetchFuelPrices() {
             try {
-                // Simulate API call with realistic Thai fuel prices
                 const mockPrices = {
-                    '95': 35.94,
-                    '91': 34.76,
-                    'diesel': 33.94,
-                    'e20': 34.54,
-                    'e85': 30.29
+                    '95': 30.55,   
+                    '91': 30.18,   
+                    'diesel': 30.44, 
+                    'e20': 28.34,  
+                    'e85': 26.29  
                 };
                 
                 fuelPrices = mockPrices;
@@ -1347,17 +1332,21 @@ ${results.fuelCostResult.style.display !== 'none' ? 'ค่าน้ำมัน
                 document.getElementById('price95').textContent = `${mockPrices['95'].toFixed(2)} บาท`;
                 document.getElementById('price91').textContent = `${mockPrices['91'].toFixed(2)} บาท`;
                 document.getElementById('priceDiesel').textContent = `${mockPrices['diesel'].toFixed(2)} บาท`;
+                
             } catch (error) {
                 console.log('Using default prices');
+                document.getElementById('price95').textContent = `${fuelPrices['95'].toFixed(2)} บาท`;
+                document.getElementById('price91').textContent = `${fuelPrices['91'].toFixed(2)} บาท`;
+                document.getElementById('priceDiesel').textContent = `${fuelPrices['diesel'].toFixed(2)} บาท`;
             }
         }
         
-        // Event listeners
+        // Setup event listeners
         function setupEventListeners() {
-            // Input changes
             elements.startPoint.addEventListener('input', calculateTotalTime);
             elements.endPoint.addEventListener('input', calculateTotalTime);
             elements.transport.addEventListener('change', calculateTotalTime);
+            elements.fuelType.addEventListener('change', calculateTotalTime);
             
             elements.departureHour.addEventListener('input', () => {
                 validateTimeInput(elements.departureHour, elements.departureMinute, 23);
@@ -1379,9 +1368,9 @@ ${results.fuelCostResult.style.display !== 'none' ? 'ค่าน้ำมัน
                 calculateTotalTime();
             });
             
-            // Fuel calculation
-            elements.useFuelCalc.addEventListener('change', (e) => {
-                if (e.target.checked) {
+            // Fuel calculation checkbox - ใช้ event นี้
+            elements.useFuelCalc.addEventListener('change', function(e) {
+                if (this.checked) {
                     elements.fuelCostGroup.classList.add('show');
                 } else {
                     elements.fuelCostGroup.classList.remove('show');
@@ -1392,25 +1381,30 @@ ${results.fuelCostResult.style.display !== 'none' ? 'ค่าน้ำมัน
             
             elements.distance.addEventListener('input', calculateTotalTime);
             elements.fuelConsumption.addEventListener('input', calculateTotalTime);
-            elements.fuelType.addEventListener('change', calculateTotalTime);
             
-            // Buttons
             document.getElementById('addStopBtn').addEventListener('click', addStop);
             document.getElementById('clearStopsBtn').addEventListener('click', clearAllStops);
             document.getElementById('resetBtn').addEventListener('click', resetAll);
+            
             document.getElementById('calculateBtn').addEventListener('click', () => {
                 calculateTotalTime();
                 document.querySelector('[data-tab="results"]').click();
             });
+            
             document.getElementById('copyResultsBtn').addEventListener('click', copyResults);
             
-            // Enter key on stop inputs
             elements.stopName.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') addStop();
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addStop();
+                }
             });
             
             elements.stopTime.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') addStop();
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addStop();
+                }
             });
         }
         
